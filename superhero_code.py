@@ -5,7 +5,7 @@ import numpy as np
 fileread = 'super_hero_powers.csv'
 fileread = 'heroes_information.csv'
 fileread = 'SuperheroDataset.csv'
-filewrite = 'battle.txt'
+filewrite = 'insertstatements.txt'
 f = open(fileread)
 
 dreader = csv.DictReader(f, delimiter=',')
