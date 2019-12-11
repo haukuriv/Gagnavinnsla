@@ -1,6 +1,7 @@
-DROP TABLE fights;
-DROP TABLE supers;
-
+drop table powers;
+drop table link_power;
+drop table fights;
+drop table supers;
 -- \i C:/Users/Lenovo/Desktop/Gagnavinnsla/Hopverkefni/createtables.sql
 
 
@@ -32,3 +33,16 @@ CREATE TABLE fights (
     wins2 INT,
     tie INT
 );
+
+CREATE TABLE powers (
+    id serial PRIMARY KEY,
+    power VARCHAR(250)
+);
+
+CREATE TABLE link_power ( 
+    id serial PRIMARY KEY,
+    hero_id serial REFERENCES supers(id),
+    power_id serial REFERENCES powers(id)
+);
+
+

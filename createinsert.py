@@ -145,7 +145,6 @@ for thehero1 in hero:
             f.write("INSERT INTO fights (hero1, hero2, nrwon1, nrwon2, tie) VALUES ('%s', '%s', %i, %i, %i);\n" % (thehero1, thehero2, np.sum(hero[thehero1]['stat/day'] > hero[thehero2]['stat/day']), np.sum(hero[thehero1]['stat/day'] < hero[thehero2]['stat/day']), np.sum(hero[thehero1]['stat/day'] == hero[thehero2]['stat/day'])))
 f.close()
 
-
 print('\nIt took %.2f seconds to run the code.' % (time.time()-start))
 
 
