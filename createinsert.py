@@ -35,7 +35,7 @@ def import_file(fileread, delimiter):
 start = time.time()
 
 fileread = 'SuperheroDataset.csv'
-filewrite = 'insertstatements.txt'
+filewrite = 'insertstatements.sql'
 
 data, var_set = import_file(fileread, ',')
 data2, var_set2 = import_file('super_hero_powers.csv', ',') 
@@ -105,39 +105,134 @@ for thehero in hero:
     hero[thehero]['stat/day'] = day[i]
     i += 1
 
+##############################################################################
+
+
+# Upphafsstilla
+attr = []
+ins = []
+#######################
+f3 = open('SuperHeroDataset.csv')
+dreader = csv.DictReader(f3,delimiter = ',' )
+
+
+
+for i in dreader:
+    attr.append(i)
+
+f3.close()
+eye_set = set()  
+hair_set = set()
+#insert_heros = "insert into heroes (name,race,eye_color,skin_color,Height,Weight) values ('{}','{}',{},'{}','{}',{},{},{},{},{},{},{},{});\n"
+insert_heros = "INSERT INTO supers (name, race, gender, eye_color, hair_color, skin_color, height, weight, intelligence, strength, speed, durability, power, combat)\nVALUES ('{}','{}','{}','{}','{}','{}',{},{},{},{},{},{},{},{});\n"
+for i in attr:
+    if i['Name'] in hero.keys():
+        inte = i['Intelligence']
+        stre = i['Strength']
+        speed = i['Speed']
+        power = i['Power']
+        combat = i['Combat']
+        dura = i['Durability']
+        name = i['Name']
+    
+    
+        if i['Weight'] !='-':
+            if ' kg' in i['Weight'].split('//')[1]:
+                weight = i['Weight'].split('//')[1].strip(' kg')
+                if ',' in weight:
+                    weight=weight.replace(',','')
+    
+                weight = float(weight)
+            if ' tons' in i['Weight'].split('//')[1]:
+                weight = i['Weight'].split('//')[1].strip(' tons')
+                if ',' in weight:
+                    weight=weight.replace(',','')
+    
+                weight = float(weight)*1000
+        else: 
+            weight = 'None'
+    
+        if i['Height'] !='-':
+            if ' cm' in i['Height'].split('//')[1]:
+                height = i['Height'].split('//')[1].strip(' cm')
+                if ',' in height:
+                    height=height.replace(',','')
+                height = float(height)
+    
+            if ' meters' in i['Height'].split('//')[1]:
+                height = i['Height'].split('//')[1].strip(' meters')
+                if ',' in height:
+                    height=height.replace(',','')
+                height = float(height)*100
+        else:
+            height = 'None'
+    
+            ###### 
+    
+        if i['Skin color'] != '-':
+            skin_color = i['Skin color'].lower()
+        else:
+            skin_color = 'none'
+    
+        if i['Race'] != '-':
+            race = i['Race'].lower()
+        else:
+            race = 'none'
+    
+        if i['Eye color'] != '-':    
+            if i['Eye color'] == 'Bown' or i['Eye color'] == 'bown':
+                eye_color = 'brown'
+            else:
+                eye_color = i['Eye color'].lower()
+        else:
+            eye_color = 'none'
+    
+        if i['Gender'] != '-':
+            Gender = i['Gender'].lower()
+        else:
+            Gender = 'none'
+        if i['Hair color'] !='-':
+            if i['Hair color'] == 'brownn' or i['Hair color'] == 'Brownn':
+                hair = 'brown'
+            else:
+                hair = i['Hair color'].lower()
+        else:
+            hair = 'none'
+    
+        eye_set.add(eye_color)
+        hair_set.add(hair)
+    
+        ins.append(insert_heros.format(name,race.lower(),Gender.lower(),eye_color.lower(),hair.lower(),skin_color.lower(),height,weight,inte,stre,speed,dura,power,combat))
+
+
+###############################################################################
+    
+    
+    
 f = open(filewrite,"w")
+
+for x in ins:
+    f.write(x)
+
 for thehero1 in hero:
     for thehero2 in hero:
         if thehero1 < thehero2:
             #f.write("%s vs %s: %.2f%% chance of winning\n" % (thehero1, thehero2, np.sum(hero[thehero1]['stat/day'] > hero[thehero2]['stat/day']) / nr_fights * 100))
-            f.write("INSERT INTO fights (hero1, hero2, nrwon1, nrwon2, tie) VALUES (%i, %i, %i, %i, %i);\n" % (join_super.index(thehero1)+1, join_super.index(thehero2)+1, np.sum(hero[thehero1]['stat/day'] > hero[thehero2]['stat/day']), np.sum(hero[thehero1]['stat/day'] < hero[thehero2]['stat/day']), np.sum(hero[thehero1]['stat/day'] == hero[thehero2]['stat/day'])))
+            f.write("INSERT INTO fights (super1_id, super2_id, wins1, wins2, tie) VALUES (%i, %i, %i, %i, %i);\n" % (join_super.index(thehero1)+1, join_super.index(thehero2)+1, np.sum(hero[thehero1]['stat/day'] > hero[thehero2]['stat/day']), np.sum(hero[thehero1]['stat/day'] < hero[thehero2]['stat/day']), np.sum(hero[thehero1]['stat/day'] == hero[thehero2]['stat/day'])))
 
-i = 1
 for thepower in Upowers:
-    f.write("INSERT INTO powers (id, power) VALUES (%i, '%s');\n" % (i, thepower))
-    i += 1
+    f.write("INSERT INTO powers (power) VALUES ('%s');\n" % thepower)
 
 i = 1
 for thehero in hero:
     for thepower in hero[thehero]['powers']:
-        f.write("INSERT INTO link_power (id, hero_id, power_id) VALUES (%i, %i, %i);\n" % (i, join_super.index(thehero)+1, Upowers.index(thepower)+1))
+        f.write("INSERT INTO link_power (id, super_id, power_id) VALUES (%i, %i, %i);\n" % (i, join_super.index(thehero)+1, Upowers.index(thepower)+1))
         i += 1
 
 f.close()
 
 
-
-
-
 print('\nIt took %.2f seconds to run the code.' % (time.time()-start))
-
-
-
-
-
-
-
-
 
 
 
