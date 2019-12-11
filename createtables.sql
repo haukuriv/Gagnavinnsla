@@ -1,29 +1,20 @@
 DROP TABLE fights;
-DROP TABLE CosmicEntity;
-DROP TABLE publishers;
-DROP TABLE alignments;
+DROP TABLE supers;
 
 -- \i C:/Users/Lenovo/Desktop/Gagnavinnsla/Hopverkefni/createtables.sql
 
 
-CREATE TABLE alignments (
-    alignment VARCHAR(7) PRIMARY KEY
-);
+CREATE TABLE supers (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50),
 
-CREATE TABLE publishers (
-    publisher VARCHAR(50) PRIMARY KEY
-);
-
-CREATE TABLE CosmicEntity (
-    name VARCHAR(50) PRIMARY KEY,
-
-    publisher VARCHAR(50) REFERENCES publishers (publisher),
+    publisher VARCHAR(50),
 
     gender CHAR(1),
     weight INT,
     height INT,
 
-    alignment VARCHAR(7) REFERENCES alignments (alignment),
+    alignment VARCHAR(7),
 
     combat INT,
     durability INT,
@@ -35,8 +26,8 @@ CREATE TABLE CosmicEntity (
 
 CREATE TABLE fights (
     id SERIAL PRIMARY KEY,
-    hero1 VARCHAR (50) REFERENCES CosmicEntity (name),
-    hero2 VARCHAR (50) REFERENCES CosmicEntity (name),
+    super1 INT REFERENCES supers (id),
+    super2 INT REFERENCES supers (id),
     wins1 INT,
     wins2 INT,
     tie INT
