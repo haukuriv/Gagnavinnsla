@@ -6,7 +6,7 @@ drop table supers;
 
 
 CREATE TABLE supers (
-    id SERIAL PRIMARY KEY,
+    id INT PRIMARY KEY,
     name VARCHAR(50),
 
     publisher VARCHAR(50),
