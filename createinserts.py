@@ -118,6 +118,8 @@ for thehero in hero:
     hero[thehero]['stat/day'] = day[i]
     i += 1
 
+
+all_supers = list(hero.keys())
 ##############################################################################
 
 
@@ -138,7 +140,7 @@ ins = []
 eye_set = set()  
 hair_set = set()
 #insert_heros = "insert into heroes (name,race,eye_color,skin_color,Height,Weight) values ('{}','{}',{},'{}','{}',{},{},{},{},{},{},{},{});\n"
-insert_heros = "INSERT INTO supers (name, race, gender, eye_color, hair_color, skin_color, publisher, alignment, height, weight, intelligence, strength, speed, durability, power, combat)\nVALUES ('{}','{}','{}','{}','{}','{}','{}','{}',{},{},{},{},{},{},{},{});\n"
+insert_heros = "INSERT INTO supers (id, name, race, gender, eye_color, hair_color, skin_color, publisher, alignment, height, weight, intelligence, strength, speed, durability, power, combat)\nVALUES ({}, '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', {}, {}, {}, {}, {}, {}, {}, {});\n"
 
 
 dup = ''
@@ -147,7 +149,7 @@ for i in data:
 
     
     if i['Name'] in hero.keys():
-
+        the_id = all_supers.index(i['Name'])+1
         name = i['Name'].replace("'",'')
         if dup == i['Name']:
             continue
@@ -238,12 +240,10 @@ for i in data:
         else:
             alignment = 'None'
     
-        ins.append(insert_heros.format(name,race.lower(),Gender.lower(),eye_color.lower(),hair.lower(),skin_color.lower(),publisher.lower(),alignment.lower(),height,weight,inte,stre,speed,dura,power,combat))
+        ins.append(insert_heros.format(the_id, name,race.lower(),Gender.lower(),eye_color.lower(),hair.lower(),skin_color.lower(),publisher.lower(),alignment.lower(),height,weight,inte,stre,speed,dura,power,combat))
 
 
 ###############################################################################
-    
-all_supers = list(hero.keys())
     
 f = open(filewrite,"w")
 
@@ -251,7 +251,7 @@ for x in ins:
     f.write(x)
     
 
-
+bla = []
 for thehero1 in hero:
     for thehero2 in hero:
         if thehero1 < thehero2:
