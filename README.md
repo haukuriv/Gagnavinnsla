@@ -1,6 +1,4 @@
-# Gagnavinnsla
-Superheroes
-
+# Gagnavinnsla - Ofurhetjur
 
 ## Datasets
 ### "SuperheroDataset.csv"
